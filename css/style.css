@@ -6,4 +6,40 @@
 body {
   margin: 0;
   padding: 0;
+  background-color: #9FBD59;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.bg {
+  background-image: url(../images/background.png);
+  background-repeat: no-repeat;
+  width: 1920%;
+  height: 1080px;
+  height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.hole-container {
+  width: 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hole {
+  background-color: #000;
+  border-radius: 50%;
+  width: 267px;
+  height: 267px;
+}
+
+.mole {
+  position: relative;
+  left: -33px;
+}
+
