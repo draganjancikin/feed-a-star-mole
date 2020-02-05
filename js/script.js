@@ -69,15 +69,17 @@ const myGame = {
   lastRender: 0,
   nextRender: Date.now(),
   isFinish: false, 
-  frameRate: 300
+  frameRate: 100
 };
+
+const bg = document.querySelector(".bg");
 
 
 // Functions =========================================================
 
-// get interval for sadnes ...........................................
-function getSadTime () {
-  return Date.now() + 2000;
+// get interval for leaving mole ......................................
+function getLeavingTime () {
+  return Date.now() + 500;
 }
 
 // get empty hole interval ...........................................
@@ -91,72 +93,74 @@ function getHungryTime () {
   return Date.now() + 2000;
 }
 
-// get interval for leaving mole ......................................
-function getLeavingTime () {
+// get interval for sadnes ...........................................
+function getSadTime () {
+  return Date.now() + 2000;
+}
+
+// get interval for fed... ...........................................
+function getFedTime () {
   return Date.now() + 500;
 }
 
-
-
-
-
+// call the next frame ...............................................
 function nextFrame () {
   const now = Date.now();
+  // check if time to next frame
   if (myGame.nextRender <= now){
-    
     for (let i = 0; i < moles.length; i++) {
-      // TODO izlistava redom moles i poziva funkciju koja proverava states
-
-      // console.log(moles[i].timeToNext, now);
-
+      //check if time to next status of moles[i]
       if (moles[i].timeToNext <= now) {
-        // console.log("its time to next status");
         getNextStatus(moles[i]);
       }
-      
     }
-
     myGame.nextRender = now + myGame.frameRate;
   }
   requestAnimationFrame(nextFrame);
 }
 
+// get next status of mole ...........................................
 function getNextStatus (mole) {
-  
   let state = mole.state;
-  
   switch (state) {
-    
     case "sad":
+    case "fed":  
       mole.state = "leaving";
       mole.timeToNext = getLeavingTime();
       mole.node.firstElementChild.src = "images/mole-leaving.png";
       break;
-
     case "leaving":
       mole.state = "gone";
       mole.timeToNext = getGoneTime();
       mole.node.firstElementChild.classList.add("gone");
       break;
-    
     case "gone":
       mole.state = "hungry";
       mole.timeToNext = getHungryTime();
       mole.node.firstElementChild.src = "images/mole-hungry.png";
       mole.node.firstElementChild.classList.remove("gone");
+      mole.node.firstElementChild.classList.add("hungry");
       break;
-
     case "hungry":
       mole.state = "sad";
       mole.timeToNext = getSadTime();
       mole.node.firstElementChild.src = "images/mole-sad.png";
+      mole.node.firstElementChild.classList.remove("hungry");
       break;
-
+    
   }
-
 }
-
 
 nextFrame();
 
+// Event Listener
+bg.addEventListener("click", function(event){
+  if (event.target.classList.value.includes("hungry")) {
+    let index = event.target.dataset.index;
+    moles[index].state = "fed";
+    moles[index].timeToNext = getFedTime();
+    moles[index].node.firstElementChild.src = "images/mole-fed.png";
+  };
+});
 
+// TODO score counter

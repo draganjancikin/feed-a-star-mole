@@ -53,3 +53,6 @@ body {
   display: none;
 }
 
+.hungry:hover {
+  cursor: url(../images/cursor-worm.png) , default;
+}
