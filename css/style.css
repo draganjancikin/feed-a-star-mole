@@ -17,7 +17,8 @@ body {
 
 /******************* section ********************/
 
-.bg {
+.bg-game, 
+.bg-game-over {
   background-image: url(../images/background.png);
   background-repeat: no-repeat;
   width: 1920%;
@@ -49,10 +50,16 @@ body {
   left: -33px;
 }
 
-.gone {
+.gone,
+.hiden {
   display: none;
 }
 
 .hungry:hover {
   cursor: url(../images/cursor-worm.png) , default;
+}
+
+.bg-game-over {
+  background-image: url(../images/win.png);
+  background-position: center center;
 }

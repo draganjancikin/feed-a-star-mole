@@ -69,10 +69,13 @@ const myGame = {
   lastRender: 0,
   nextRender: Date.now(),
   isFinish: false, 
-  frameRate: 100
+  frameRate: 100,
+  WIN_SCORE: 2
 };
 
-const bg = document.querySelector(".bg");
+const bgGame = document.querySelector(".bg-game");
+const bgGameOver = document.querySelector(".bg-game-over");
+
 let score = 0;
 
 // Functions =========================================================
@@ -130,13 +133,17 @@ function getNextStatus (mole) {
   let state = mole.state;
   switch (state) {
     case "sad":
-    case "fed":  
+    case "fed":
       mole.state = "leaving";
       mole.timeToNext = getLeavingTime();
       if(mole.king) {
         mole.node.firstElementChild.src = "images/king-mole-leaving.png";  
       } else {
         mole.node.firstElementChild.src = "images/mole-leaving.png";
+      }
+      if (score >= myGame.WIN_SCORE) {
+        bgGame.classList.add("hiden");
+        bgGameOver.classList.remove("hiden");
       }
       break;
     case "leaving":
@@ -173,9 +180,8 @@ function getNextStatus (mole) {
 nextFrame();
 
 // Event Listener
-bg.addEventListener("click", function(event){
+bgGame.addEventListener("click", function(event){
   if (event.target.classList.value.includes("hungry")) {
-    
     let index = event.target.dataset.index;
     moles[index].state = "fed";
     moles[index].timeToNext = getFedTime();
@@ -186,5 +192,6 @@ bg.addEventListener("click", function(event){
       score +=1;
       moles[index].node.firstElementChild.src = "images/mole-fed.png";
     }
+    
   };
 });
