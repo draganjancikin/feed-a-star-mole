@@ -73,11 +73,11 @@ const myGame = {
 };
 
 const bg = document.querySelector(".bg");
-
+let score = 0;
 
 // Functions =========================================================
 
-// get interval for leaving mole ......................................
+// get interval for leaving mole .....................................
 function getLeavingTime () {
   return Date.now() + 500;
 }
@@ -93,18 +93,24 @@ function getHungryTime () {
   return Date.now() + 2000;
 }
 
-// get interval for sadnes ...........................................
+// get interval for sad mole .........................................
 function getSadTime () {
   return Date.now() + 2000;
 }
 
-// get interval for fed... ...........................................
+// get interval for fed...............................................
 function getFedTime () {
   return Date.now() + 500;
 }
 
+// get king ..........................................................
+function getKing(){
+  return Math.random() >= 0.9;
+}
+
 // call the next frame ...............................................
 function nextFrame () {
+
   const now = Date.now();
   // check if time to next frame
   if (myGame.nextRender <= now){
@@ -127,27 +133,40 @@ function getNextStatus (mole) {
     case "fed":  
       mole.state = "leaving";
       mole.timeToNext = getLeavingTime();
-      mole.node.firstElementChild.src = "images/mole-leaving.png";
+      if(mole.king) {
+        mole.node.firstElementChild.src = "images/king-mole-leaving.png";  
+      } else {
+        mole.node.firstElementChild.src = "images/mole-leaving.png";
+      }
       break;
     case "leaving":
       mole.state = "gone";
       mole.timeToNext = getGoneTime();
+      mole.king = false;
       mole.node.firstElementChild.classList.add("gone");
       break;
     case "gone":
       mole.state = "hungry";
       mole.timeToNext = getHungryTime();
-      mole.node.firstElementChild.src = "images/mole-hungry.png";
+      mole.king = getKing();
+      if(mole.king) {
+        mole.node.firstElementChild.src = "images/king-mole-hungry.png";  
+      } else {
+        mole.node.firstElementChild.src = "images/mole-hungry.png";
+      }
       mole.node.firstElementChild.classList.remove("gone");
       mole.node.firstElementChild.classList.add("hungry");
       break;
     case "hungry":
       mole.state = "sad";
       mole.timeToNext = getSadTime();
-      mole.node.firstElementChild.src = "images/mole-sad.png";
+      if(mole.king) {
+        mole.node.firstElementChild.src = "images/king-mole-sad.png";  
+      } else {
+        mole.node.firstElementChild.src = "images/mole-sad.png";
+      }
       mole.node.firstElementChild.classList.remove("hungry");
       break;
-    
   }
 }
 
@@ -156,11 +175,16 @@ nextFrame();
 // Event Listener
 bg.addEventListener("click", function(event){
   if (event.target.classList.value.includes("hungry")) {
+    
     let index = event.target.dataset.index;
     moles[index].state = "fed";
     moles[index].timeToNext = getFedTime();
-    moles[index].node.firstElementChild.src = "images/mole-fed.png";
+    if(moles[index].king) {
+      moles[index].node.firstElementChild.src = "images/king-mole-fed.png";
+      score +=2;  
+    } else {
+      score +=1;
+      moles[index].node.firstElementChild.src = "images/mole-fed.png";
+    }
   };
 });
-
-// TODO score counter
