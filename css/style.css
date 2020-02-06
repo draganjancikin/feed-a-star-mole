@@ -40,26 +40,41 @@ body {
   background-color: #000;
   border-radius: 50%;
   overflow: visible;
-  width: 267px;
-  height: 267px;
-  margin: 30px;
+  width: 260px;
+  height: 260px;
+  margin: 25px;
 }
 
 .mole {
   position: relative;
-  left: -33px;
+  left: -35px;
 }
 
 .gone,
-.hiden {
+.hiden 
+{
   display: none;
 }
 
-.hungry:hover {
+.hungry {
   cursor: url(../images/cursor-worm.png) , default;
 }
 
 .bg-game-over {
   background-image: url(../images/win.png);
   background-position: center center;
+}
+
+.score-box {
+  width: 1660px;
+}
+
+.worm-container {
+  overflow: hidden;
+  transition: width 0.5s ease-in-out;
+}
+
+.worm {
+  width: 1660px;
+  height: 140px;
 }

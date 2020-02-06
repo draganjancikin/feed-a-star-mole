@@ -70,7 +70,7 @@ const myGame = {
   nextRender: Date.now(),
   isFinish: false, 
   frameRate: 100,
-  WIN_SCORE: 2
+  WIN_SCORE: 10
 };
 
 const bgGame = document.querySelector(".bg-game");
@@ -192,6 +192,7 @@ bgGame.addEventListener("click", function(event){
       score +=1;
       moles[index].node.firstElementChild.src = "images/mole-fed.png";
     }
+    document.querySelector(".worm-container").style.width = `${(score/myGame.WIN_SCORE) * 100}%`;
     
   };
 });
