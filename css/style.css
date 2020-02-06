@@ -18,15 +18,16 @@ body {
 /******************* section ********************/
 
 .bg-game, 
-.bg-game-over {
+.bg-game-over 
+{
   background-image: url(../images/background.png);
   background-repeat: no-repeat;
-  width: 1920%;
+  width: 1920px;
   height: 970px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .hole-container {
