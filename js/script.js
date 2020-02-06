@@ -65,73 +65,47 @@ const moles = [
 ];
 
 // Game properties ...................................................
-const myGame = {
+const game = {
   lastRender: 0,
   nextRender: Date.now(),
   isFinish: false, 
-  frameRate: 100,
-  WIN_SCORE: 10
+  FRAME_RATE: 100,
+  WIN_SCORE: 10,
+  score: 0
 };
 
+// game node .........................................................
 const bgGame = document.querySelector(".bg-game");
+
+// game over node ....................................................
 const bgGameOver = document.querySelector(".bg-game-over");
 
-let score = 0;
 
 // Functions =========================================================
 
-// get interval for leaving mole .....................................
-function getLeavingTime () {
-  return Date.now() + 500;
-}
-
-// get empty hole interval ...........................................
-function getGoneTime () {
-  // between 2 and 18 sec
-  return Date.now() + (Math.floor(Math.random() * 18000) + 2000);
-}
-
-// get interval for hungry mole ......................................
-function getHungryTime () {
-  return Date.now() + 2000;
-}
-
-// get interval for sad mole .........................................
-function getSadTime () {
-  return Date.now() + 2000;
-}
-
-// get interval for fed...............................................
-function getFedTime () {
-  return Date.now() + 500;
-}
-
-// get king ..........................................................
-function getKing(){
-  return Math.random() >= 0.9;
-}
-
 // call the next frame ...............................................
 function nextFrame () {
+  
+  // check if game finish
+  if(game.isFinish) return;
 
   const now = Date.now();
   // check if time to next frame
-  if (myGame.nextRender <= now){
+  if (game.nextRender <= now){
     for (let i = 0; i < moles.length; i++) {
       //check if time to next status of moles[i]
       if (moles[i].timeToNext <= now) {
         getNextStatus(moles[i]);
       }
     }
-    myGame.nextRender = now + myGame.frameRate;
+    game.nextRender = now + game.FRAME_RATE;
   }
   requestAnimationFrame(nextFrame);
 }
 
 // get next status of mole ...........................................
 function getNextStatus (mole) {
-  let state = mole.state;
-  switch (state) {
+  switch (mole.state) {
     case "sad":
     case "fed":
       mole.state = "leaving";
@@ -140,10 +114,11 @@ function getNextStatus (mole) {
         mole.node.firstElementChild.src = "images/king-mole-leaving.png";  
       } else {
         mole.node.firstElementChild.src = "images/mole-leaving.png";
-      }
-      if (score >= myGame.WIN_SCORE) {
+      } 
+      if (game.score >= game.WIN_SCORE) {
         bgGame.classList.add("hiden");
         bgGameOver.classList.remove("hiden");
+        game.isFinish = true;
       }
       break;
     case "leaving":
@@ -177,9 +152,38 @@ function getNextStatus (mole) {
   }
 }
 
-nextFrame();
+// get interval for leaving mole .....................................
+function getLeavingTime () {
+  return Date.now() + 500;
+}
 
-// Event Listener
+// get empty hole interval ...........................................
+function getGoneTime () {
+  // between 2 and 18 sec
+  return Date.now() + (Math.floor(Math.random() * 18000) + 2000);
+}
+
+// get interval for hungry mole ......................................
+function getHungryTime () {
+  return Date.now() + 2000;
+}
+
+// get interval for sad mole .........................................
+function getSadTime () {
+  return Date.now() + 2000;
+}
+
+// get interval for fed...............................................
+function getFedTime () {
+  return Date.now() + 500;
+}
+
+// get king ..........................................................
+function getKing(){
+  return Math.random() >= 0.9;
+}
+
+// Event Listener ====================================================
 bgGame.addEventListener("click", function(event){
   if (event.target.classList.value.includes("hungry")) {
     let index = event.target.dataset.index;
@@ -187,12 +191,13 @@ bgGame.addEventListener("click", function(event){
     moles[index].timeToNext = getFedTime();
     if(moles[index].king) {
       moles[index].node.firstElementChild.src = "images/king-mole-fed.png";
-      score +=2;  
+      game.score +=2;  
     } else {
-      score +=1;
+      game.score +=1;
       moles[index].node.firstElementChild.src = "images/mole-fed.png";
     }
-    document.querySelector(".worm-container").style.width = `${(score/myGame.WIN_SCORE) * 100}%`;
-    
+    document.querySelector(".worm-container").style.width = `${(game.score/game.WIN_SCORE) * 100}%`;
   };
 });
+
+nextFrame();
