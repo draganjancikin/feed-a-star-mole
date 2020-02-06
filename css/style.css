@@ -22,11 +22,11 @@ body {
   background-image: url(../images/background.png);
   background-repeat: no-repeat;
   width: 1920%;
-  height: 1080px;
+  height: 970px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .hole-container {
@@ -40,14 +40,15 @@ body {
   background-color: #000;
   border-radius: 50%;
   overflow: visible;
-  width: 260px;
-  height: 260px;
-  margin: 25px;
+  width: 245px;
+  height: 245px;
+  margin: 15px;
 }
 
 .mole {
   position: relative;
   left: -35px;
+  width: 315px;
 }
 
 .gone,
@@ -76,5 +77,5 @@ body {
 
 .worm {
   width: 1660px;
-  height: 140px;
+  height: 80px;
 }
