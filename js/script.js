@@ -197,15 +197,15 @@ function getKing(){
 // Event Listener ====================================================
 bgGame.addEventListener("click", function(event){
   if (event.target.classList.value.includes("hungry")) {
-    let index = event.target.dataset.index;
-    moles[index].state = "fed";
-    moles[index].timeToNext = getTimeToNext(moles[index].state);
-    if(moles[index].king) {
-      moles[index].node.firstElementChild.src = "images/king-mole-fed.png";
+    let mole = moles[event.target.dataset.index];
+    mole.state = "fed";
+    mole.timeToNext = getTimeToNext(mole.state);
+    if(mole.king) {
+      mole.node.firstElementChild.src = "images/king-mole-fed.png";
       game.score +=2;  
     } else {
       game.score +=1;
-      moles[index].node.firstElementChild.src = "images/mole-fed.png";
+      mole.node.firstElementChild.src = "images/mole-fed.png";
     }
     document.querySelector(".worm-container").style.width = `${(game.score/game.WIN_SCORE) * 100}%`;
   };
